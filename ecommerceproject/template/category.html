@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+        Welcome to abc store where you can buy all itam
+    {% endif %}
+{% endblock %}
+{% block title %}
+{% if category %}
+        {{category.name }} - ABC STORE
+    {% else %}
+        see our NEW COLLECTION -ABC STORE
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+
+    <div>
+        <div class="row my_row_class">
+            <div class="mx-auto">
+            <p><a href="{% url 'shop:allprodcat' %}">"our product collection"</a></p>
+        </div>
+            </div>
+    </div>
+
+      {% endif %}
+<div class="mx-auto">
+    {% if category %}
+
+    <img class="my_image" src="{{ category.image.url }} "  alt="{{category.name}} ">
+</div>
+<br>
+<div>
+        <h1 class="text-center my_title">{{category.name}}</h1>
+        <p class="text-justify">{{category.description}}</p>
+</div>
+    {% else %}
+<div>
+    <img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="our product" >
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">
+        our product collection
+    </h1>
+    <p class="text-justify"> contrario del pensamiento popular, el texto de Lorem Ipsum no es simplemente texto aleatorio. Tiene sus raices en una pieza cl´sica de la literatura del Latin, que data del año 45 antes de Cristo, haciendo que este adquiera mas de 2000 años de antiguedad. Richard McClintock, un profesor de Latin de la Universidad de Hampden-Sydney en Virginia, encontró una de las palabras más oscuras de la lengua del latín, "consecteur", en un pasaje de Lorem Ipsum, y al seguir leyendo distintos textos del latín, descubrió la fuente indudable. Lorem Ipsum viene de las secciones 1.10.32 y 1.10.33 de "de Finnibus Bonorum et Malorum" (Los Extremos del Bien y El Mal) por Cicero, escrito en el año 45 antes de Cristo. Este libro es un tratado de teoría de éticas, muy popular durante el Renacimiento. La primera linea del Lorem Ipsum, "Lorem ipsum dolor sit amet..", viene de una linea en la sección 1.10.32</p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottam_margin col-9 col-sm-12  col-md-4 xol-lg-4">
+            <div class="card-text-center" style="width:200px;height:250px;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" style="width:300px;height:150px;"src="{{product.image.url}}"  alt="{{product.name}}"></a>
+                <div class="card-body">
+                    <h2>{{product.name}}</h2>
+                    <p>{{product.price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+
+
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
